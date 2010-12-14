@@ -24,9 +24,12 @@ module Rack #:nodoc:
     def call(env)
       status, headers, response = @app.call(env)
 
-      printer = @printer_factory.new(env, config)
-      printer.print_request_headers(filter_headers(env, @request_filters))
-      printer.print_response_headers(filter_headers(headers, @response_filters))
+      request_headers = filter_headers(env, @request_filters)
+      response_headers = filter_headers(headers, @response_filters)
+
+      printer = @printer_factory.new(request_headers, response_headers, env,
+                                     status, headers, response, config)
+      printer.run
 
       [status, headers, response]
     end

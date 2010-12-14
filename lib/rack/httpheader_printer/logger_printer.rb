@@ -6,14 +6,14 @@ module Rack
         super
         @logger = @options[:logger] || ::Logger.new(STDOUT)
       end
-      def print_request_headers(headers)
+      def print_request_headers
         puts "REQUEST HEADERS ################################"
-        print_headers(headers)
+        print_headers @request_headers
         puts "################################################"
       end
-      def print_response_headers(headers)
+      def print_response_headers
         puts "RESPONSE HEADERS ###############################"
-        print_headers(headers)
+        print_headers @response_headers
         puts "################################################"
       end
 
