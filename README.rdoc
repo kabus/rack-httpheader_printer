@@ -1,9 +1,14 @@
 = rack-httpheader_printer
 
-Description goes here.
+Simple Rack middleware to check Request and Response Headers on Rack Application.
+
+You can select the ways to check.
+Now, logger and HTML embeded.
+
+It was inspired by rails-footnotes.
 
 == Contributing to rack-httpheader_printer
- 
+
 * Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet
 * Check out the issue tracker to make sure someone already hasn't requested it and/or contributed it
 * Fork the project
