@@ -3,7 +3,7 @@ module Rack #:nodoc:
   class HttpheaderPrinter
 
     @@default_options = {
-      :request_filters => [/^rack/, /^action_dispatch/, /^warden/],
+      :request_filters => [/^rack/, /^action_/, /^warden/],
       :printer => lambda {|msg| print msg},
     }
 
@@ -20,10 +20,10 @@ module Rack #:nodoc:
     end
 
     def call(env)
-      @env = env
-      print_headers(env, @request_filters)
-
+      @env = env.dup
       status, headers, response = @app.call(env)
+
+      print_headers(@env, @request_filters)
       print_headers(headers, @response_filters)
 
       [status, headers, response]
