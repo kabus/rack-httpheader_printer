@@ -1,1 +1,3 @@
-require 'rack/httpheader_printer'
+module Rack
+  autoload :HttpheaderPrinter, 'rack/httpheader_printer'
+end

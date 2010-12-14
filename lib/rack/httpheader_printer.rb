@@ -1,45 +1,43 @@
 # -*- coding: utf-8 -*-
 module Rack #:nodoc:
   class HttpheaderPrinter
+    autoload :AbstractPrinter, "rack/httpheader_printer/abstract_printer.rb"
+    autoload :LoggerPrinter,   "rack/httpheader_printer/logger_printer"
 
-    @@default_options = {
+    @@default_config = {
       :request_filters => [/^rack/, /^action_/, /^warden/],
-      :printer => lambda {|msg| print msg},
+      :printer => LoggerPrinter
     }
 
-    attr_reader :env
+    attr_reader :config
 
-    def initialize(app, options={})
+    def initialize(app, config={})
       @app = app
-      @options = @@default_options.merge(options)
+      @config = @@default_config.merge(config)
 
-      @printer = @options[:printer]
-      @default_filters = to_a(@options[:filters] || @options[:default_filters])
-      @request_filters = @default_filters + to_a(@options[:request_filters])
-      @response_filters = @default_filters + to_a(@options[:response_filters])
+      @printer_factory = @config[:printer]
+      @default_filters = to_a(@config[:filters] || @config[:default_filters])
+      @request_filters = @default_filters + to_a(@config[:request_filters])
+      @response_filters = @default_filters + to_a(@config[:response_filters])
     end
 
     def call(env)
-      @env = env.dup
       status, headers, response = @app.call(env)
 
-      print_headers(@env, @request_filters)
-      print_headers(headers, @response_filters)
+      printer = @printer_factory.new(env, config)
+      printer.print_request_headers(filter_headers(env, @request_filters))
+      printer.print_response_headers(filter_headers(headers, @response_filters))
 
       [status, headers, response]
     end
 
-    def print_headers(h, filters)
-      h.keys.sort_by(&:to_s).each {|k|
-        if filters.none?{|f| f === k}
-          h[k].to_s.split("\n").each { |v|
-            _print_ "#{k}: #{v}\r\n"
-          }
-        end
+    private
+    def filter_headers(headers, filters)
+      headers.reject{|k,v|
+        filters.any?{|f| f === k }
       }
     end
 
-    private
     def to_a(val)
       case val
       when Array
@@ -49,10 +47,6 @@ module Rack #:nodoc:
       else
         [val]
       end
-    end
-
-    def _print_(msg)
-      instance_exec(msg, &@printer)
     end
   end
 end
