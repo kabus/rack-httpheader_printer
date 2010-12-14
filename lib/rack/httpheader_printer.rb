@@ -3,10 +3,11 @@ module Rack #:nodoc:
   class HttpheaderPrinter
     autoload :AbstractPrinter, "rack/httpheader_printer/abstract_printer.rb"
     autoload :LoggerPrinter,   "rack/httpheader_printer/logger_printer"
+    autoload :HtmlPrinter,     "rack/httpheader_printer/html_printer"
 
     @@default_config = {
       :request_filters => [/^rack/, /^action_/, /^warden/],
-      :printer => LoggerPrinter
+      :printer => HtmlPrinter
     }
 
     attr_reader :config

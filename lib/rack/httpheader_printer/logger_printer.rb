@@ -6,6 +6,14 @@ module Rack
         super
         @logger = @options[:logger] || ::Logger.new(STDOUT)
       end
+
+      def run
+        print_request_headers
+        print_response_headers
+      end
+
+      private
+
       def print_request_headers
         puts "REQUEST HEADERS ################################"
         print_headers @request_headers
@@ -17,7 +25,6 @@ module Rack
         puts "################################################"
       end
 
-      private
       def print_headers(headers)
         headers.sort_by{|k,vs| k}.each do |k,vs|
           vs.to_s.split("\n").each do |v|

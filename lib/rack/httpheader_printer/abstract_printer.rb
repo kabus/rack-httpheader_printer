@@ -15,14 +15,7 @@ module Rack
         @options = options
       end
       def run
-        print_request_headers
-        print_response_headers
-      end
-      def print_request_headers
-        raise
-      end
-      def print_response_headers
-        raise
+        raise "Implement this!"
       end
     end
   end
