@@ -15,8 +15,8 @@ Jeweler::Tasks.new do |gem|
   gem.name = "rack-httpheader_printer"
   gem.homepage = "http://github.com/kabus/rack-httpheader_printer"
   gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.summary = %Q{HTTP Header print middleware for Rack applications}
+  gem.description = %Q{print HTTP Header in some ways}
   gem.email = "khabus@gmail.com"
   gem.authors = ["Takezawa"]
   # Include your dependencies below. Runtime dependencies are required when using your gem,
