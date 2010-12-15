@@ -1,11 +1,20 @@
 = rack-httpheader_printer
 
-Simple Rack middleware to check Request and Response Headers on Rack Application.
+A simple Rack middleware to check Request and Response Headers on Rack Application.
 
 You can select the ways to check.
 Now, logger and HTML embeded.
 
 It was inspired by rails-footnotes.
+
+== Usage
+
+Rails 3:
+  # Gemfile
+  gem 'rack-httpheader_printer', :git => 'git://github.com/kabus/rack-httpheader_printer.git'
+
+  # config/application.rb
+  config.middleware.insert_before Rack::Lock, Rack::HttpheaderPrinter
 
 == Contributing to rack-httpheader_printer
 
