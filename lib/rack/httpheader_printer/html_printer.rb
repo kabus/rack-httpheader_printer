@@ -5,6 +5,11 @@ module Rack
       @@fieldset_class_name = 'html_printer_fieldset'
 
       def run
+        if response.empty?
+          # Etagのキャッシュとかでbodyがないとき
+          return
+        end
+
         buttons = '<div style="float:left;">' + toggle_button_tag('request') + toggle_button_tag('response') + '</div>'
         insert_last buttons
         insert_last '<div style="clear:both;"></div>'
@@ -15,7 +20,7 @@ module Rack
 
       private
       def display_tag(name, headers)
-        lines = headers.sort_by{|k,vs| k}.map do |k,vs|
+        lines = headers.map do |k,vs|
           vs.to_s.split("\n").map do |v|
             "#{k}: #{v}"
           end
