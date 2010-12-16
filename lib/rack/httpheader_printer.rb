@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 module Rack #:nodoc:
   class HttpheaderPrinter
-    autoload :AbstractPrinter, "rack/httpheader_printer/abstract_printer"
-    autoload :LoggerPrinter,   "rack/httpheader_printer/logger_printer"
-    autoload :HtmlPrinter,     "rack/httpheader_printer/html_printer"
-    autoload :GrowlPrinter,    "rack/httpheader_printer/growl_printer"
+    autoload :AbstractPrinter,  "rack/httpheader_printer/abstract_printer"
+    autoload :LoggerPrinter,    "rack/httpheader_printer/logger_printer"
+    autoload :HtmlPrinter,      "rack/httpheader_printer/html_printer"
+    autoload :GrowlPrinter,     "rack/httpheader_printer/growl_printer"
+    autoload :JsConsolePrinter, "rack/httpheader_printer/js_console_printer"
 
     @@default_config = {
       :request_filters => [/^rack/, /^action_/, /^warden/],
@@ -29,7 +30,7 @@ module Rack #:nodoc:
       request_headers = filter_headers(env, @request_filters)
       response_headers = filter_headers(headers, @response_filters)
 
-      printer = @printer_factory.new(request_headers, response_headers, env, response, config)
+      printer = @printer_factory.new(request_headers, response_headers, env, status, headers, response, config)
       printer.run
 
       [status, headers, response]

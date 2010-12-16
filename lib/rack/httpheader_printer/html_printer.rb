@@ -5,10 +5,7 @@ module Rack
       @@fieldset_class_name = 'html_printer_fieldset'
 
       def run
-        if response.empty?
-          # Etagのキャッシュとかでbodyがないとき
-          return
-        end
+        return unless headers["Content-Type"] =~ /text\/html|application\/xhtml\+xml/
 
         buttons = '<div style="float:left;">' + toggle_button_tag('request') + toggle_button_tag('response') + '</div>'
         insert_last buttons
